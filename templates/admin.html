@@ -43,8 +43,8 @@
 
   <div id='calendar'></div>
 
- <script>
-  let calendar;  // Make calendar variable global
+<script>
+  let calendar;
 
   document.addEventListener('DOMContentLoaded', function () {
     const calendarEl = document.getElementById('calendar');
@@ -59,12 +59,19 @@
       eventDidMount: function(info) {
         const tooltip = `${info.event.title}`;
         info.el.setAttribute('title', tooltip);
+      },
+      eventClick: function(info) {
+        const title = info.event.title;
+        const start = new Date(info.event.start).toLocaleString();
+        const end = new Date(info.event.end).toLocaleString();
+        const passengers = info.event.extendedProps.passengers;
+
+        alert(`Booking: ${title}\nPassengers: ${passengers}\nFrom: ${start}\nTo: ${end}`);
       }
     });
     calendar.render();
   });
 
-  // 🔁 This function handles the dropdown change
   function changeView() {
     const view = document.getElementById('calendarViewSelect').value;
     if (calendar) {
