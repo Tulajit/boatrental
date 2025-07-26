@@ -60,14 +60,16 @@
         const tooltip = `${info.event.title}`;
         info.el.setAttribute('title', tooltip);
       },
-      eventClick: function(info) {
-        const title = info.event.title;
-        const start = new Date(info.event.start).toLocaleString();
-        const end = new Date(info.event.end).toLocaleString();
-        const passengers = info.event.extendedProps.passengers;
+     eventClick: function(info) {
+  document.getElementById("modalTitle").innerText = info.event.title;
+  document.getElementById("modalPassengers").innerText = info.event.extendedProps.passengers;
+  document.getElementById("modalStart").innerText = new Date(info.event.start).toLocaleString();
+  document.getElementById("modalEnd").innerText = new Date(info.event.end).toLocaleString();
 
-        alert(`Booking: ${title}\nPassengers: ${passengers}\nFrom: ${start}\nTo: ${end}`);
-      }
+  document.getElementById("bookingModal").style.display = "block";
+  document.getElementById("modalOverlay").style.display = "block";
+}
+
     });
     calendar.render();
   });
@@ -80,5 +82,14 @@
   }
 </script>
 
+  <div id="bookingModal" style="display:none; position:fixed; top:20%; left:50%; transform:translateX(-50%); background:white; padding:20px; border:1px solid #ccc; border-radius:10px; box-shadow:0 5px 20px rgba(0,0,0,0.2); z-index:1000; max-width:400px;">
+  <h3>Booking Details</h3>
+  <p><strong>Name:</strong> <span id="modalTitle"></span></p>
+  <p><strong>Passengers:</strong> <span id="modalPassengers"></span></p>
+  <p><strong>From:</strong> <span id="modalStart"></span></p>
+  <p><strong>To:</strong> <span id="modalEnd"></span></p>
+  <button onclick="closeModal()">Close</button>
+</div>
+<div id="modalOverlay" onclick="closeModal()" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:999;"></div>
 </body>
 </html>
