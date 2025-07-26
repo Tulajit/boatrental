@@ -127,6 +127,25 @@ def logout():
     session.pop('admin', None)
     return redirect(url_for('index'))
 
+@app.route('/api/bookings')
+def api_bookings():
+    with sqlite3.connect(DB) as conn:
+        rows = conn.execute("SELECT name, date, start_time, duration FROM bookings").fetchall()
+
+    events = []
+    for row in rows:
+        name, date, start_time, duration = row
+        start = datetime.strptime(f"{date} {start_time}", "%Y-%m-%d %H:%M")
+        end = start + timedelta(hours=duration)
+        events.append({
+            "title": name,
+            "start": start.isoformat(),
+            "end": end.isoformat()
+        })
+
+    return {"events": events}
+
+
 if __name__ == '__main__':
     init_db()
     port = int(os.environ.get("PORT", 10000))
