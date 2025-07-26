@@ -130,17 +130,20 @@ def logout():
 @app.route('/api/bookings')
 def api_bookings():
     with sqlite3.connect(DB) as conn:
-        rows = conn.execute("SELECT name, date, start_time, duration FROM bookings").fetchall()
+        rows = conn.execute("SELECT name, date, start_time, duration, passengers FROM bookings").fetchall()
 
     events = []
     for row in rows:
-        name, date, start_time, duration = row
+        name, date, start_time, duration, passengers = row
         start = datetime.strptime(f"{date} {start_time}", "%Y-%m-%d %H:%M")
         end = start + timedelta(hours=duration)
         events.append({
-            "title": name,
+            "title": f"{name} ({passengers} pax)",
             "start": start.isoformat(),
-            "end": end.isoformat()
+            "end": end.isoformat(),
+            "extendedProps": {
+                "passengers": passengers
+            }
         })
 
     return {"events": events}
