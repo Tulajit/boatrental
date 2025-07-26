@@ -1,94 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin Dashboard</title>
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.js"></script>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    #calendar { max-width: 1100px; margin: auto; }
-    .header-bar {
-      background: #0074D9;
-      color: white;
-      padding: 10px;
-      font-size: 20px;
-      text-align: right;
-    }
-    .header-bar span {
-      float: left;
-      font-weight: bold;
-    }
-  </style>
+    <title>Admin Dashboard - Boatr Rentals</title>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
-  <div class="header-bar">
-    <span>Malarky Charters</span>
-    Nate Sinisgalli | <a href="{{ url_for('logout') }}" style="color:white;">Logout</a>
+<body style="font-family:sans-serif; margin:0; padding:0;">
+
+  <!-- 🔵 Top Navigation Bar -->
+  <div style="background-color:#007BFF; color:white; padding:15px; display:flex; justify-content:space-between; align-items:center;">
+    <div style="font-size: 1.4rem; font-weight:bold;">
+      🛥️ Boatr Rentals
+    </div>
+    <div style="font-size: 1rem;">
+      Admin: Nate S. | <a href="/logout" style="color:white; text-decoration:underline;">Logout</a>
+    </div>
   </div>
 
-  <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px auto; max-width: 1100px;">
-  <div>
-    <select id="calendarViewSelect" onchange="changeView()" style="padding: 5px;">
-      <option value="dayGridMonth">Month</option>
-      <option value="timeGridWeek">Week</option>
-    </select>
-  </div>
-  <div>
-    <button onclick="alert('Calendar clicked')" style="margin-right: 10px;">Calendar</button>
-    <button onclick="alert('Filtered clicked')" style="margin-right: 10px;">Filtered</button>
-    <button onclick="alert('Settings clicked')">Settings</button>
-  </div>
-</div>
+  <!-- 📅 Calendar Display -->
+  <div id="calendar" style="max-width: 1200px; margin: 30px auto;"></div>
 
-
-  <div id='calendar'></div>
-
-<script>
-  let calendar;
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const calendarEl = document.getElementById('calendar');
-    calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'dayGridMonth',
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek'
-      },
-      events: '/api/bookings',
-      eventDidMount: function(info) {
-        const tooltip = `${info.event.title}`;
-        info.el.setAttribute('title', tooltip);
-      },
-     eventClick: function(info) {
-  document.getElementById("modalTitle").innerText = info.event.title;
-  document.getElementById("modalPassengers").innerText = info.event.extendedProps.passengers;
-  document.getElementById("modalStart").innerText = new Date(info.event.start).toLocaleString();
-  document.getElementById("modalEnd").innerText = new Date(info.event.end).toLocaleString();
-
-  document.getElementById("bookingModal").style.display = "block";
-  document.getElementById("modalOverlay").style.display = "block";
-}
-
-    });
-    calendar.render();
-  });
-
- function closeModal() {
-  document.getElementById("bookingModal").style.display = "none";
-  document.getElementById("modalOverlay").style.display = "none";
-}
-  }
-</script>
-
+  <!-- 📋 Booking Modal -->
   <div id="bookingModal" style="display:none; position:fixed; top:20%; left:50%; transform:translateX(-50%); background:white; padding:20px; border:1px solid #ccc; border-radius:10px; box-shadow:0 5px 20px rgba(0,0,0,0.2); z-index:1000; max-width:400px;">
-  <h3>Booking Details</h3>
-  <p><strong>Name:</strong> <span id="modalTitle"></span></p>
-  <p><strong>Passengers:</strong> <span id="modalPassengers"></span></p>
-  <p><strong>From:</strong> <span id="modalStart"></span></p>
-  <p><strong>To:</strong> <span id="modalEnd"></span></p>
-  <button onclick="closeModal()">Close</button>
-</div>
-<div id="modalOverlay" onclick="closeModal()" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:999;"></div>
+    <h3>Booking Details</h3>
+    <p><strong>Name:</strong> <span id="modalTitle"></span></p>
+    <p><strong>Passengers:</strong> <span id="modalPassengers"></span></p>
+    <p><strong>From:</strong> <span id="modalStart"></span></p>
+    <p><strong>To:</strong> <span id="modalEnd"></span></p>
+    <button onclick="closeModal()">Close</button>
+  </div>
+  <div id="modalOverlay" onclick="closeModal()" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:999;"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarEl = document.getElementById('calendar');
+
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        events: '/api/bookings',
+        eventClick: function (info) {
+          document.getElementById("modalTitle").innerText = info.event.title;
+          document.getElementById("modalPassengers").innerText = info.event.extendedProps.passengers || "N/A";
+          document.getElementById("modalStart").innerText = new Date(info.event.start).toLocaleString();
+          document.getElementById("modalEnd").innerText = new Date(info.event.end).toLocaleString();
+          document.getElementById("bookingModal").style.display = "block";
+          document.getElementById("modalOverlay").style.display = "block";
+        }
+      });
+
+      calendar.render();
+    });
+
+    function closeModal() {
+      document.getElementById("bookingModal").style.display = "none";
+      document.getElementById("modalOverlay").style.display = "none";
+    }
+  </script>
+
 </body>
 </html>
+
