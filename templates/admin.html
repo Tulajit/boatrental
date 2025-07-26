@@ -1,1 +1,47 @@
-<h1>Admin Dashboard</h1>{% for b in bookings %}<p>{{ b }}</p>{% endfor %}<a href='/logout'>Logout</a>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #calendar { max-width: 1100px; margin: auto; }
+    .header-bar {
+      background: #0074D9;
+      color: white;
+      padding: 10px;
+      font-size: 20px;
+      text-align: right;
+    }
+    .header-bar span {
+      float: left;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-bar">
+    <span>Malarky Charters</span>
+    Nate Sinisgalli | <a href="{{ url_for('logout') }}" style="color:white;">Logout</a>
+  </div>
+
+  <div id='calendar'></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek'
+        },
+        events: '/api/bookings'
+      });
+      calendar.render();
+    });
+  </script>
+</body>
+</html>
