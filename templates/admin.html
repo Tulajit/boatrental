@@ -26,6 +26,21 @@
     Nate Sinisgalli | <a href="{{ url_for('logout') }}" style="color:white;">Logout</a>
   </div>
 
+  <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px auto; max-width: 1100px;">
+  <div>
+    <select id="calendarViewSelect" onchange="changeView()" style="padding: 5px;">
+      <option value="dayGridMonth">Month</option>
+      <option value="timeGridWeek">Week</option>
+    </select>
+  </div>
+  <div>
+    <button onclick="alert('Calendar clicked')" style="margin-right: 10px;">Calendar</button>
+    <button onclick="alert('Filtered clicked')" style="margin-right: 10px;">Filtered</button>
+    <button onclick="alert('Settings clicked')">Settings</button>
+  </div>
+</div>
+
+
   <div id='calendar'></div>
 
   <script>
