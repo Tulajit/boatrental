@@ -74,11 +74,10 @@
     calendar.render();
   });
 
-  function changeView() {
-    const view = document.getElementById('calendarViewSelect').value;
-    if (calendar) {
-      calendar.changeView(view);
-    }
+ function closeModal() {
+  document.getElementById("bookingModal").style.display = "none";
+  document.getElementById("modalOverlay").style.display = "none";
+}
   }
 </script>
 
