@@ -5,11 +5,84 @@
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background-color: #343a40;
+            color: white;
+            padding-top: 60px;
+        }
+        .sidebar a {
+            display: block;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .topbar {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-left: 200px;
+        }
+        #calendar {
+            margin: 30px auto;
+            margin-left: 220px;
+            max-width: 1200px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            max-width: 400px;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 999;
+        }
+    </style>
 </head>
-<body style="font-family:sans-serif; margin:0; padding:0;">
+<body>
 
-  <!-- 🔵 Top Navigation Bar -->
-  <div style="background-color:#007BFF; color:white; padding:15px; display:flex; justify-content:space-between; align-items:center;">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <a href="#">Manifest</a>
+    <a href="#">Reports</a>
+    <a href="#">Items</a>
+    <a href="#">Settings</a>
+  </div>
+
+  <!-- Topbar -->
+  <div class="topbar">
     <div style="font-size: 1.4rem; font-weight:bold;">
       🛥️ Boatr Rentals
     </div>
@@ -18,11 +91,11 @@
     </div>
   </div>
 
-  <!-- 📅 Calendar Display -->
-  <div id="calendar" style="max-width: 1200px; margin: 30px auto;"></div>
+  <!-- Calendar -->
+  <div id="calendar"></div>
 
-  <!-- 📋 Booking Modal -->
-  <div id="bookingModal" style="display:none; position:fixed; top:20%; left:50%; transform:translateX(-50%); background:white; padding:20px; border:1px solid #ccc; border-radius:10px; box-shadow:0 5px 20px rgba(0,0,0,0.2); z-index:1000; max-width:400px;">
+  <!-- Booking Modal -->
+  <div id="bookingModal" class="modal">
     <h3>Booking Details</h3>
     <p><strong>Name:</strong> <span id="modalTitle"></span></p>
     <p><strong>Passengers:</strong> <span id="modalPassengers"></span></p>
@@ -30,12 +103,11 @@
     <p><strong>To:</strong> <span id="modalEnd"></span></p>
     <button onclick="closeModal()">Close</button>
   </div>
-  <div id="modalOverlay" onclick="closeModal()" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:999;"></div>
+  <div id="modalOverlay" class="modal-overlay" onclick="closeModal()"></div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const calendarEl = document.getElementById('calendar');
-
       const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         headerToolbar: {
@@ -53,7 +125,6 @@
           document.getElementById("modalOverlay").style.display = "block";
         }
       });
-
       calendar.render();
     });
 
@@ -65,4 +136,3 @@
 
 </body>
 </html>
-
