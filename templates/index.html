@@ -1,1 +1,19 @@
-<h1>Boat Booking</h1><form method='post' action='/book'>Name:<input name='name'><br>Email:<input name='email'><br>Date:<input name='date' type='date'><br>Start Time:<input name='start_time' type='time'><br>Duration:<input name='duration' type='number'><br>Passengers:<input name='passengers' type='number'><br><button>Book Now</button></form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Boat Booking</title>
+</head>
+<body>
+    <h1>Boat Booking</h1>
+    <form method="post" action="/book">
+        Name:<br><input name="name" required><br><br>
+        Email:<br><input name="email" type="email" required><br><br>
+        Date:<br><input name="date" type="date" required><br><br>
+        Start Time:<br><input name="start_time" type="time" required><br><br>
+        Duration (2–8 hrs):<br><input name="duration" type="number" min="2" max="8" required><br><br>
+        Passengers (max 12):<br><input name="passengers" type="number" max="12" required><br><br>
+        <button type="submit">Book Now</button>
+    </form>
+</body>
+</html>
